@@ -16,7 +16,7 @@ int main(int argc, char** argv) {
     std::vector<double> arr2(npt);
     std::cout << arr2.size() << std::endl;
     std::cout << arr2[0] << std::endl;
-    // Run time array
+    // Variable length array (VLA)
     double xm[npt];
     std::cout << sizeof(xm) << std::endl;
     std::cout << xm[0] << " " << xm[npt-1] << std::endl;
