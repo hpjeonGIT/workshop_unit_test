@@ -9,3 +9,8 @@ Ref: Modern C++ Programming with Test-driven development by Jeff Langr
   - int x= 0;
   - int x {0};
   - {} can be used anywhere. x(0) may not work in the class declaration. x=0 may not work for atomic
+  - But {} checks type more strictly. Casting or type conversion will work with () or =
+  - In overloading of constructors, it will prefer initialization_list
+  - std::vector<int> v1(10,20); 10 length vector with value of 20
+  - std::vector<int> v1{10,20}; a single vector with 2 elements of 10,20
+- Location 2342: typedef => using
