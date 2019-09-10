@@ -7,8 +7,8 @@ class parray {
     
 public:
     int myrank,ncpus;
-    parray(int argc, char** argv) {
-	MPI_Init(&argc, &argv);
+    parray() {
+	MPI_Init(nullptr, nullptr);
 	MPI_Comm_size(MPI_COMM_WORLD, &ncpus);
 	MPI_Comm_rank(MPI_COMM_WORLD, &myrank);
     }
@@ -20,7 +20,7 @@ public:
 
 int main(int argc, char** argv) {
 
-    parray mympi(argc, argv);
+    parray mympi;
     //mympi.initialize();
     if (mympi.ncpus != 4) {
 	std::cout << "ncpus is not 4. Exits here \n";
