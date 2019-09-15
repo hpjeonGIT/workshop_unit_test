@@ -118,6 +118,17 @@ int main(int argc, char** argv)
     std::cout << "wall time for AoS search = "
 	      << static_cast<float> (t1-t0)/CLOCKS_PER_SEC
 	      << " nsum = " << nsum << std:: endl; //0.000638sec
-    
+    // another AoS
+    nsum = 0;
+    t0 = clock();
+    for(auto& i : ob2) {
+	k = i.search(0.5);
+	ans2.push_back(k);
+	nsum += k;
+    }
+    t1 = clock();
+    std::cout << "wall time for AoS search = "
+	      << static_cast<float> (t1-t0)/CLOCKS_PER_SEC
+	      << " nsum = " << nsum << std:: endl; 
    return 0;
 }
