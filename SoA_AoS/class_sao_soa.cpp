@@ -39,8 +39,8 @@ public:
 	x =  static_cast<double> (rand()) / static_cast<double> (RAND_MAX);
 	y =  static_cast<float > (rand()) / static_cast<float > (RAND_MAX);
     }
-    uint search(double const& x) {
-	if (x > x || y > static_cast<float> (x)) {
+    uint search(double const& z) {
+	if (x > z || y > static_cast<float> (z)) {
 	    tag = true;
 	    return ind;
 	}
@@ -54,7 +54,7 @@ public:
 
 int main(int argc, char** argv)
 {
-    std::size_t nsize=100000;
+    std::size_t nsize=10000000;
     table_soa ob1(nsize);
     // preset
     srand (time(nullptr));
@@ -89,7 +89,7 @@ int main(int argc, char** argv)
     std::cout << "wall time for SoA search = "
 	      << static_cast<float> (t1-t0)/CLOCKS_PER_SEC
 	      << std:: endl;
-    std::cout << "nsum = " << nsum << std::endl;
+    std::cout << "nsum = " << nsum << std::endl; // 0.107995
 
     // case of AoS
     srand (time(nullptr));
@@ -117,7 +117,8 @@ int main(int argc, char** argv)
     t1 = clock();
     std::cout << "wall time for AoS search = "
 	      << static_cast<float> (t1-t0)/CLOCKS_PER_SEC
-	      << " nsum = " << nsum << std:: endl; //0.000638sec
+	      << " nsum = " << nsum << std:: endl; //0.12447
+    
     // another AoS
     nsum = 0;
     t0 = clock();
@@ -129,6 +130,6 @@ int main(int argc, char** argv)
     t1 = clock();
     std::cout << "wall time for AoS search = "
 	      << static_cast<float> (t1-t0)/CLOCKS_PER_SEC
-	      << " nsum = " << nsum << std:: endl; 
-   return 0;
+	      << " nsum = " << nsum << std:: endl; //0.121744
+  return 0;
 }
