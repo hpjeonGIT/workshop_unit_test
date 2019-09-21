@@ -3,6 +3,7 @@
 - cd build
 - cmake ..
 - make
+- ./a.exe
 
 # Running individual gtest executable
 - ./test1
