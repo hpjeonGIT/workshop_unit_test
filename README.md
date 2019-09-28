@@ -22,6 +22,8 @@ Ref: Modern C++ Programming with Test-driven development by Jeff Langr
   - `f1(const double& dt)` or `f1(double const& dt)` pass by constant address. Recommended
   - Ref: https://softwareengineering.stackexchange.com/questions/372105/is-passing-arguments-as-const-references-premature-optimization
 - Using unique pointer
+  - Allocate dynamic array using new while delete is not required. Garbage collection
+  - Not suitable for MPI communication. Use STL instead
   - Legacy pointer : requires delete
   ```
   int *x;
