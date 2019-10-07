@@ -1,0 +1,2 @@
+- In md.h, MD is a class
+- In particle.h, neighbor_list.h, data structures are defined using struct, not class as everything is public
