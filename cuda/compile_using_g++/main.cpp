@@ -7,7 +7,6 @@
 
 using namespace std;
 
-
 int main() {
     const int n = 5;
     float h_A[n] = { 0., 1., 2., 3., 4. };
