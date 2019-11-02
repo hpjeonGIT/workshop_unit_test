@@ -79,6 +79,22 @@ void saxpy_cpu(float A, std::vector<float>& X, std::vector<float>& Y) {
     }
     
 }
+
+struct saxpy_fntr_cpu
+{
+    const float a;
+    saxpy_fntr_cpu(float _a) : a(_a) {}
+    float operator() (const float& x, const float& y) const {
+	return a*x + y;
+    }
+};
+
+void saxpy_cpu2(float A, std::vector<float>& X, std::vector<float>& Y) {
+    std::transform(X.begin(), X.end(), Y.begin(), Y.begin(),
+		   saxpy_fntr_cpu(A));    
+}
+
+
 int main(void)
 {
     const int N=1000000;
@@ -101,7 +117,24 @@ int main(void)
     std::vector<float> Yc = Xc;
     TIMER_CPU(saxpy_cpu(10.f, Xc, Yc), etime1, 100);
     std::cout << etime1 <<std::endl;
+    TIMER_CPU(saxpy_cpu2(10.f, Xc, Yc), etime1, 100);
+    std::cout << etime1 <<std::endl;
     
     return 0;
 }
+/*
+# nvcc main.cu -std=c++11 
+hpjeon@hakune:~/hw/CUDA/thrust/saxpy$ ./a.out 
+102.303 => 2x thrust::transform 
+29.1 => thrust::transform + functor
+885  =>  cpu 
+1558 => in cpu version, functor is slower as 2x
+
+#nvcc main.cu -std=c++11  -O3 
+hpjeon@hakune:~/hw/CUDA/thrust/saxpy$ ./a.out 
+99.499
+29.0161
+90
+77 => with -O3,  functon in cpu is 15% faster
+/*
     
