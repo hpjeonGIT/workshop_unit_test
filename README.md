@@ -41,3 +41,6 @@ Ref: Modern C++ Programming with Test-driven development by Jeff Langr
   w = std::make_unique<int[]>(4);
   ```
   
+# Valgrind
+- Detection of uninitialized variables are done when the variables are compared
+- Assigning uninitialized value is NOT detected
