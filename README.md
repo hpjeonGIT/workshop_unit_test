@@ -44,3 +44,11 @@ Ref: Modern C++ Programming with Test-driven development by Jeff Langr
 # Valgrind
 - Detection of uninitialized variables are done when the variables are compared
 - Assigning uninitialized value is NOT detected
+
+# ctest from cmake
+- ctest # run all tests - unit test, regression test, ...
+- ctest -L some_test # run some_test among all tests
+- ctest -LE some_test # run all tests but some_test
+- ctest --timeout 1000 # each test will use time out 1000 sec
+- ctest -R my_unit_test_01 # run one set named my_unit_test_01 among all tests
+- ctest -VV -R my_unit_test_01 # run one set named my_unit_test01 among all tests. Higher verbosity. stdout will be shown in the screen output
