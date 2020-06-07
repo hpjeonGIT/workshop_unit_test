@@ -1,3 +1,5 @@
+## Ref: http://books.gigatux.nl/mirror/pythonprogramming/0596000855_python2-CHP-19-SECT-8.html
+
 ## C++ with Python coupling
 ```
 swig -c++ -python number.i
