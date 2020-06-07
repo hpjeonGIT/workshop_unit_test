@@ -1,4 +1,5 @@
 ## C++ with Python coupling
+```
 swig -c++ -python number.i
 g++ -g -std=c++14 -fPIC -c number.cxx number_wrap.cxx  -I/usr/include/python3.6
 g++ -shared number.o number_wrap.o _number.so
@@ -18,3 +19,4 @@ Number = 7
 add 15
 >>> abc.display()
 Number = 22
+```
