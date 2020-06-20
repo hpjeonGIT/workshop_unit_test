@@ -9,6 +9,7 @@ public:
     void add(int value);
     void sub(int value);
     void display(  );
+    void timedata(std::time_t x);
     int data;
     std::vector<int> xyz;
 };
