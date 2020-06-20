@@ -8,6 +8,10 @@ namespace std{
 
 %{
 #include "number.h"
+typedef long time_t;
 %}
 
+typedef long time_t;
 %include number.h
+// http://www.swig.org/Doc1.3/SWIG.html Chapter 5.3.5 Typedef
+// typedef definitions appearing in a SWIG interface are not propagated to the generated wrapper code
