@@ -31,3 +31,7 @@ void Number::sub(int value) {
 void Number::display(  ) { 
    std::cout << "Number = " << data << std::endl; 
 }
+
+void Number::timedata(std::time_t x) {
+   std::cout << "time data = " << x << std::endl;
+}
