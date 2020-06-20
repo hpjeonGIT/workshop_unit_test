@@ -21,4 +21,6 @@ Number = 7
 add 15
 >>> abc.display()
 Number = 22
+>>> abc.timedata(123)
+time data = 123
 ```
