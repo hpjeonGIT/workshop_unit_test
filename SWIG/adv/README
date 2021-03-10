@@ -1,0 +1,49 @@
+# for gcc
+SWIG -python ex.i
+gcc -fPIC -c ex.c ex_wrap.c -I/usr/include/python
+ld -shared ex.o ex_wrap.o -o _ex.so
+
+# for g++
+SWIG -c++ -python ex2.i
+g++ -g -std=c++14 -fPIC -c ex2.cpp ex2_wrap.cxx -I/usr/include/python3.6
+g++ -shared ex2.o ex2_wrap.o -o _ex2.so
+
+In python3
+import ex2
+data = ex2.vectord([1,2,3])
+ex2.my_vect_sum(data)
+ex2.my_vect_sum([1,2,3])
+
+## 
+swig -c++ -python number.i
+g++ -g -std=c++14 -fPIC -c number.cxx number_wrap.cxx  -I/usr/include/python3.6
+g++ -shared number.o number_wrap.o -o _number.so
+python3
+>>> import number
+>>> abc = number.Number(1)
+Number: 1
+>>> abc.display()
+Number = 1
+>>> abc.add_v([1,2,3])
+add 6
+>>> abc.display()
+Number = 7
+>>> x = number.vectori([4,5,6])
+>>> abc.add_v(x)
+add 15
+>>> abc.display()
+Number = 22
+>>> import number
+>>> abc = number.Child(12)
+>>> abc.print_c()
+id_c=22
+>>> 
+
+
+# shared_ptr + derived_class
+http://swig.10945.n7.nabble.com/Inheritance-with-smart-pointers-doesn-t-work-td6741.html
+- use typemap
+- use factory
+https://stackoverflow.com/questions/27392602/swig-downcasting-from-base-to-deriv
+ed
+- dynamic_pointer_cast
