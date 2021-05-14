@@ -21,3 +21,19 @@
 'Kx  =  (Ky  ==  Kz)'
 ```
 - Adding `\=\=` resolves the issue
+
+# Regex in cpp
+- For an input:
+```
+# python calls
+a = Win.create('wname', 'fname', x=1, y=2); # comment here
+b = Win_create('wn2', 'fn2', x=1.5, y=2.1); # comment here
+# comments
+```
+-  Find 2nd argument of each function call
+```
+ $ g++ -std=c++17 test_regex.cpp 
+ $ ./a.out 
+ 2nd argument = fn2
+ 2nd argument = fname
+```
