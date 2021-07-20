@@ -54,3 +54,38 @@ GROUP "/" {
 }
 }
 ```
+
+## Independent writing
+- A group must be written using collective calls
+- Data sets might be written by different, avoiding collective calls
+- However, all data sets must be defined over the entire ranks
+- mpic++ -std=c++14 independent_writing.cc -L/home/hpjeon/sw_local/hdf5/1.8.20/lib -lhdf5 -I/home/hpjeon/sw_local/hdf5/1.8.20/include
+```
+h5dump mpi_indepenet.h5
+HDF5 "mpi_indepenet.h5" {
+GROUP "/" {
+   DATASET "Data0" {
+      DATATYPE  H5T_IEEE_F64LE
+      DATASPACE  SIMPLE { ( 1, 5 ) / ( 1, 5 ) }
+      DATA {
+      (0,0): 1, 2, 3, 4, 5
+      }
+   }
+   DATASET "Data1" {
+      DATATYPE  H5T_IEEE_F64LE
+      DATASPACE  SIMPLE { ( 1, 5 ) / ( 1, 5 ) }
+      DATA {
+      (0,0): 11, 12, 13, 14, 15
+      }
+   }
+   DATASET "Data2" {
+      DATATYPE  H5T_IEEE_F64LE
+      DATASPACE  SIMPLE { ( 1, 5 ) / ( 1, 5 ) }
+      DATA {
+      (0,0): 21, 22, 23, 24, 25
+      }
+   }
+}
+}
+```
+- Data0 is written by rank0 and Data1 is by rank1. Data2 is by rank2. No need to call MPI_Gather()
