@@ -59,7 +59,7 @@ GROUP "/" {
 - A group must be written using collective calls
 - Data sets might be written by different, avoiding collective calls
 - However, all data sets must be defined over the entire ranks
-- mpic++ -std=c++14 independent_writing.cc -L/home/hpjeon/sw_local/hdf5/1.8.20/lib -lhdf5 -I/home/hpjeon/sw_local/hdf5/1.8.20/include
+- mpic++ -std=c++14 independent_writing.cc -L/opt/hdf5/1.8.20/lib -lhdf5 -I/opt/hdf5/1.8.20/include
 ```
 h5dump mpi_indepenet.h5
 HDF5 "mpi_indepenet.h5" {
@@ -89,3 +89,50 @@ GROUP "/" {
 }
 ```
 - Data0 is written by rank0 and Data1 is by rank1. Data2 is by rank2. No need to call MPI_Gather()
+
+## Independent writing with appending rows
+-  mpic++ -std=c++14 append_parallel_ind.cc -L/opt/hdf5/1.8.20/lib \
+  -lhdf5 -I/opt/hdf5/1.8.20/include
+- When extending dset_id[], make sure that all of dset_id[] are extended over entire ranks. Extending my_dset only on a single rank will produce inappropriate reuslts.
+```
+h5dump mpi_ind.h5 
+HDF5 "mpi_ind.h5" {
+GROUP "/" {
+   GROUP "GRP01" {
+      DATASET "Data0" {
+         DATATYPE  H5T_IEEE_F64LE
+         DATASPACE  SIMPLE { ( 5, 5 ) / ( H5S_UNLIMITED, 5 ) }
+         DATA {
+         (0,0): 1, 2, 3, 4, 5,
+         (1,0): 1, 2, 3, 4, 5,
+         (2,0): 1, 2, 3, 4, 5,
+         (3,0): 1, 2, 3, 4, 5,
+         (4,0): 1, 2, 3, 4, 5
+         }
+      }
+      DATASET "Data1" {
+         DATATYPE  H5T_IEEE_F64LE
+         DATASPACE  SIMPLE { ( 5, 5 ) / ( H5S_UNLIMITED, 5 ) }
+         DATA {
+         (0,0): 21, 22, 23, 24, 25,
+         (1,0): 31, 32, 33, 34, 35,
+         (2,0): 41, 42, 43, 44, 45,
+         (3,0): 51, 52, 53, 54, 55,
+         (4,0): 61, 62, 63, 64, 65
+         }
+      }
+      DATASET "Data2" {
+         DATATYPE  H5T_IEEE_F64LE
+         DATASPACE  SIMPLE { ( 5, 5 ) / ( H5S_UNLIMITED, 5 ) }
+         DATA {
+         (0,0): 41, 42, 43, 44, 45,
+         (1,0): 61, 62, 63, 64, 65,
+         (2,0): 81, 82, 83, 84, 85,
+         (3,0): 101, 102, 103, 104, 105,
+         (4,0): 121, 122, 123, 124, 125
+         }
+      }
+   }
+}
+}
+```
