@@ -24,8 +24,9 @@ int main(int argc, char** argv) {
 	for (int i=0; i<el.size(); i++) {
 	    buff[cursor+i] = el[i];
 	}
-	cursor += el.size() + 1;
+	cursor += el.size();
 	buff[cursor] = '\0'; // injection of the delimiter
+	cursor += 1;
     }
     std::vector<int> ndispl(mpi_size,0);
     std::vector<int> ncount(mpi_size,0);
