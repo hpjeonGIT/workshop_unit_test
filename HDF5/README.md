@@ -136,3 +136,36 @@ GROUP "/" {
 }
 }
 ```
+## Parallel collective writing + attribute
+- mpic++ -std=c++14 parallel_hyperslab.cc -L/home/hpjeon/sw_local/hdf5/1.8.20/lib -I/home/hpjeon/sw_local/hdf5/1.8.20/include  -lhdf5
+- mpirun -np 3 ./a.out 
+- h5dump  par_hyperslab.h5 
+```
+HDF5 "par_hyperslab.h5" {
+GROUP "/" {
+   DATASET "ATTR" {
+      DATATYPE  H5T_STD_I32LE
+      DATASPACE  SIMPLE { ( 3 ) / ( 3 ) }
+      DATA {
+      (0): 0, 0, 0
+      }
+      ATTRIBUTE "coord" {
+         DATATYPE  H5T_STD_I32LE
+         DATASPACE  SIMPLE { ( 3 ) / ( 3 ) }
+         DATA {
+         (0): 11, 22, 33
+         }
+      }
+   }
+   DATASET "PRL" {
+      DATATYPE  H5T_IEEE_F64LE
+      DATASPACE  SIMPLE { ( 3, 5 ) / ( 3, 5 ) }
+      DATA {
+      (0,0): 1, 2, 3, 4, 5,
+      (1,0): 11, 12, 13, 14, 15,
+      (2,0): 21, 22, 23, 24, 25
+      }
+   }
+}
+}
+```
