@@ -136,6 +136,22 @@ GROUP "/" {
 }
 }
 ```
+- For the iterations of 100,000 using 3 MPI ranks, this took more than 30 sec using intel-i3
+- We may use chunked row growth - may increase the row size by 400. In the end, reset the table size with exact row size
+  - `mpic++ -std=c++14 append_chunk_parallel_ind.cc   -L/opt/hdf5/1.8.20/lib   -lhdf5 -I/opt/hdf5/1.8.20/include`
+  - This took 5.439 sec
+- Or we may aggregate results into a vector of vectors - then dump all results into double array, then write HDF5 once
+  - `mpic++ -std=c++14 finalize_parallel_ind.cc    -L/opt/hdf5/1.8.20/lib   -lhdf5 -I/opt/hdf5/1.8.20/include`
+  - This took 0.352 sec
+- Parallel file system may take the advantage of MPI info
+  - Ref: https://forum.hdfgroup.org/t/slow-writing-parallel-hdf5-performance-for-only-one-variable/3258
+```
+    MPI_Info info;
+    MPI_Info_create(&info);
+    MPI_Info_set(info, "striping_unit", "1048576");
+    MPI_Info_set(info, "ind_wr_buffer_size", "1024");
+    H5Pset_fapl_mpio(hprop, comm, info);
+```
 ## Parallel collective writing + attribute
 - mpic++ -std=c++14 parallel_hyperslab.cc -L/home/hpjeon/sw_local/hdf5/1.8.20/lib -I/home/hpjeon/sw_local/hdf5/1.8.20/include  -lhdf5
 - mpirun -np 3 ./a.out 
