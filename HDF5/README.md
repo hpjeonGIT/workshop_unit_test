@@ -185,3 +185,58 @@ GROUP "/" {
 }
 }
 ```
+## Making a compound or structured data type
+- Use H5Tcreate to make a new data type for HDF5
+- For string or char array, use H5T_C_S1 as a base then set the size using the char array size
+- Serial IO
+- Appending a row into a table after closing/reopening
+- g++ -std=c++14 append_compound_data.cc  -L/opt/hdf5/1.8.20/lib -lhdf5 -I/opt/hdf5/1.8.20/include
+```
+h5dump result.h5 
+HDF5 "result.h5" {
+GROUP "/" {
+   GROUP "GRP1" {
+      DATASET "SAMPLE" {
+         DATATYPE  H5T_COMPOUND {
+            H5T_STD_I32LE "index";
+            H5T_STRING {
+               STRSIZE 6;
+               STRPAD H5T_STR_NULLTERM;
+               CSET H5T_CSET_ASCII;
+               CTYPE H5T_C_S1;
+            } "descr";
+            H5T_IEEE_F64LE "value";
+         }
+         DATASPACE  SIMPLE { ( 5 ) / ( H5S_UNLIMITED ) }
+         DATA {
+         (0): {
+               0,
+               "STAT0",
+               0
+            },
+         (1): {
+               1,
+               "STAT1",
+               3.1415
+            },
+         (2): {
+               2,
+               "STAT2",
+               6.283
+            },
+         (3): {
+               3,
+               "STAT3",
+               9.4245
+            },
+         (4): {
+               4,
+               "STAT4",
+               12.566
+            }
+         }
+      }
+   }
+}
+}
+```
