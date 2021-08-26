@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <mpi.h>
+#include <stdexcept>
 
 #include <cereal/types/vector.hpp>
 #include <cereal/types/string.hpp>
@@ -62,8 +63,10 @@ int main(int argc, char** argv) {
     oarchive(abc);
     ss.flush();
     std::string str_local = ss.str();
-    int send_count = str_local.length();
-
+    auto send_count = str_local.length(); // send_count will be unsigned long
+    std::cout << "send_count = " << send_count << std::endl;
+    if (send_count*mpi_size > 2147483647) 
+	throw std::runtime_error("32bit integer limit will be violated");
     // gathering
     std::vector<int> ncount(mpi_size), ndispl(mpi_size), nrecv(mpi_size);
     std::string str_global;
@@ -73,7 +76,7 @@ int main(int argc, char** argv) {
 	nrecv.resize(mpi_size);
     }
     MPI_Gather(&send_count, 1, MPI_INT, nrecv.data(), 1, MPI_INT, 0, comm);
-    int sum_count = 0;
+    uint64_t sum_count = 0;
     if (mpi_rank ==0) {
 	ncount[0] = nrecv[0];
 	ndispl[0] = 0;
