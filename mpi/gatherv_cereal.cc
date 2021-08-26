@@ -37,13 +37,24 @@ int main(int argc, char** argv) {
     MPI_Comm_rank(comm, &mpi_rank);
 
     // preparation
-    mainstruct abc;
-    abc.xyz.push_back(mpi_rank);
-    abc.txt.push_back("my rank is " + std::to_string(mpi_rank));
-    substruct inner;
-    inner.ijk.push_back(mpi_rank); inner.ijk.push_back(mpi_rank*100);
-    inner.subname.push_back("inner txt is from " + std::to_string(mpi_rank));
-    abc.data.push_back(inner);
+    std::vector<mainstruct> abc;
+    int nsize;
+    if (mpi_rank%2 == 0) {
+	nsize = 2;
+    } else {
+	nsize = 3;
+    }
+    abc.resize(nsize);
+    for (int i=0; i<nsize; i++) {
+	abc[i].xyz.push_back(mpi_rank);
+	abc[i].txt.push_back("my rank is " + std::to_string(mpi_rank*i));
+	substruct inner;
+	inner.ijk.push_back(mpi_rank*i); inner.ijk.push_back(mpi_rank*100);
+	inner.subname.push_back("inner txt is from " +
+				std::to_string(mpi_rank) + " with index " +
+				std::to_string(i));
+	abc[i].data.push_back(inner);
+    }
 
     // serialize
     std::stringstream ss;
@@ -84,12 +95,12 @@ int main(int argc, char** argv) {
 	    std::stringstream s(std::string(str_global.substr(ndispl[i],
 							      ncount[i])));
 	    cereal::BinaryInputArchive iarchive(s);
-	    mainstruct tmp;
+	    std::vector<mainstruct> tmp;
 	    iarchive >> tmp;
-	    result.push_back(tmp);
+	    for (auto& el: tmp) result.push_back(el);
 	}
 	//
-	for (auto&el : result) {
+	for (auto&el : result) { // 2, 3, 2, 3, ...
 	    for (auto& txt : el.txt) {
 		std::cout << "main txt " << txt << std::endl;
 	    }
@@ -110,10 +121,18 @@ mpic++ -std=c++14 ./gatherv_cereal.cc -I/opt/cereal-1.3.0/include/
 
 $ mpirun -np 3 ./a.out 
 main txt my rank is 0
-sub txt inner txt is from 0
+sub txt inner txt is from 0 with index 0
+main txt my rank is 0
+sub txt inner txt is from 0 with index 1
+main txt my rank is 0
+sub txt inner txt is from 1 with index 0
 main txt my rank is 1
-sub txt inner txt is from 1
+sub txt inner txt is from 1 with index 1
 main txt my rank is 2
-sub txt inner txt is from 2
+sub txt inner txt is from 1 with index 2
+main txt my rank is 0
+sub txt inner txt is from 2 with index 0
+main txt my rank is 2
+sub txt inner txt is from 2 with index 1
 
 */
