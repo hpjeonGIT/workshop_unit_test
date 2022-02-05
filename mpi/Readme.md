@@ -1,0 +1,19 @@
+## sample code for MPI with c++
+- Use -std=c++14 as an option
+- gatherv_cereal.cc
+  - Used cereal to serialize struct data to simplify gathering process
+- mpi_class_test.cpp
+  - Using class, MPI initialization/Finalization could be done by constructor/destructor
+- sample_bcast_string.cc
+  - Using void pointer (void *), string data can be broadcasted
+- a2a_test.cc
+  - Sample code using Alltoall and Alltoallv
+  - Alltoallv might be inefficient if communication pairs are sparse
+- waitall_test.cc
+  - Async communication equivalent version of a2a_test.cc
+  - Size of communication data is collected using a2a
+  - But a2av might be inefficient for sparse communication pairs
+    - When communication pairs are dense, a2av vs async will be similar
+  - STL is used for MPI_Request and MPI_Status
+  - Compile: mpicxx -std=c++14 waitall_test.cc
+  - Running: mpirun -np 4 ./a.out 
