@@ -12,3 +12,20 @@
 - Testing std::vector instead of aligned_alloc
 - But the overhead of unaligned memory is very high
 - Needs to test with icpc. Doe icpc produce fast code even with std::vector?
+
+## call by value vs call by reference
+- Call by value:
+```
+void loop_v(int n, Vec x, Vec y, Vec &z) {
+  double pi=3.14;
+  for (int=0;i<n;i++) z[i] = pi*x[i] + y[i];
+}
+```
+- Call by reference:
+```
+void loop_v(int n, Vec const &x, Vec const &y, Vec &z) {
+  double pi=3.14;
+  for (int=0;i<n;i++) z[i] = pi*x[i] + y[i];
+}
+```
+- Call by value will be 5-6x more expensive than call by reference
