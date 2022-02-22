@@ -12,6 +12,7 @@
 - Testing std::vector instead of aligned_alloc
 - But the overhead of unaligned memory is very high
 - Needs to test with icpc. Doe icpc produce fast code even with std::vector?
+  - No. g++ produces similar binary of what icpc produces
 
 ## call by value vs call by reference
 - Call by value:
