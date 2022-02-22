@@ -7,12 +7,23 @@
 
 /*  g++ -march=native  -std=c++17 -O3 -fopenmp fma_vector.cxx
  ref: https://www.officedaytime.com/simd512e/simdimg/si.php?f=movapd
+@ using pass by value
 Wall time at regular = 207 millisec
 local sum = 2.17126e+08
 Wall time at openmp simd = 917 millisec
 local sum = 2.17126e+08
 Wall time at SIMD 256 = 919 millisec
 local sum = 2.17126e+08
+
+@ using pass by reference
+$ ./a.out 
+Wall time at regular = 204 millisec
+local sum = 2.17126e+08
+Wall time at openmp simd = 212 millisec
+local sum = 2.17126e+08
+Wall time at SIMD 256 = 210 millisec
+local sum = 2.17126e+08
+
 */
 
 using chtime = std::chrono::steady_clock;
@@ -23,7 +34,8 @@ double drand() {
     return static_cast<double> (rand())/ static_cast<double> (RAND_MAX);
 }
 
-void fma_256(int n, Vec x, Vec y, Vec &z) {
+// void fma_256(int n, Vec x, Vec y, Vec &z) { // DON'T !!!
+void fma_256(int n, Vec const &x, Vec const &y, Vec &z) {
     double pi = 3.1415;
     int m = n / 4;
     int l = n % 4;
@@ -31,8 +43,6 @@ void fma_256(int n, Vec x, Vec y, Vec &z) {
     for (int i = 0; i<m ;i++) {
 	__m256d px = _mm256_loadu_pd(&x[i*4]);
 	__m256d py = _mm256_loadu_pd(&y[i*4]);
-	//__m256d px = _mm256_setr_pd(x[i*4],x[i*4+1],x[i*4+2],x[i*4+3]);
-	//__m256d py = _mm256_setr_pd(y[i*4],y[i*4+1],y[i*4+2],y[i*4+3]);
 	__m256d pz = _mm256_fmadd_pd(coef,px,py);
 	_mm256_storeu_pd(&z[i*4],pz); // no-alignment required
     }
@@ -41,7 +51,7 @@ void fma_256(int n, Vec x, Vec y, Vec &z) {
     }
 }
 
-void openmp_simd(int n, Vec x, Vec y, Vec &z) {
+void openmp_simd(int n, Vec const &x, Vec const& y, Vec &z) {
     double pi = 3.1415;
     #pragma omp parallel
     #pragma omp for simd schedule(static,100000)
